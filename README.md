@@ -25,6 +25,6 @@ Tara does exactly what we would do. It looks at your friend's facebook posts and
 ## Potential
 Really, sky is the limit regarding Tara's use. It can be made as broad as we want and as specific as we want. There are many platforms that gives great suggestions as to what YOU should buy. But there aren't much when it comes to finding someone else a gift. We would like to open it up to you DEVELOPERS to explore as this is all open source now!
 
-## Thanks to LA Hacks to amazing opportunity!
+## Thanks to LA Hacks for amazing opportunity!
 
 
