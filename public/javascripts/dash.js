@@ -99,7 +99,7 @@ function findValues(id) {
                     console.log(data);
                     if (success) {
                         // start the modal here.
-                        $('#answer').append("<p>" + data +"</p><br>")
+                        $('#answer').append("<p>" + data[0] +"</p><br>")
                         //return data;
                     }
                 });

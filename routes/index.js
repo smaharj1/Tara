@@ -45,7 +45,7 @@ function getSpellCheckedText(text, callBack) {
       "text": text,
     },
     headers: {
-      "Ocp-Apim-Subscription-Key": "PUT SPELL CHECK Subscription key here"
+      "Ocp-Apim-Subscription-Key": "70f1e020fbcd466a9bbe77461b091256"
     }
   }
 
@@ -72,7 +72,7 @@ function analyzeText(detect, callBack) {
   getSpellCheckedText(text, function (returnText) {
     text = returnText;
     var text = getTokens(returnText).join(' ');
-    //console.log(text);
+    console.log("Before analyzing: " + text);
     var requestOptions = {
       //url: "https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/"+detect,
       url: "https://westus.api.cognitive.microsoft.com/linguistics/v1.0/analyze",
@@ -85,7 +85,7 @@ function analyzeText(detect, callBack) {
       headers: {
         "Content-Type": "application/json",
         //"Ocp-Apim-Subscription-Key": "SENTIMENT ANALYSIS SUBSCRIPTION KEY GOES HERE"
-        "Ocp-Apim-Subscription-Key": "LINGUISTIC ANALYZER SUBSCRIPTION KEY GOES HERE"
+        "Ocp-Apim-Subscription-Key": "99aa200fbbc64332b28e92a1a22c26c6"
       }
     }
 
@@ -101,7 +101,7 @@ function analyzeText(detect, callBack) {
         var lastVerbIndex = -1;
 
         for (var i = 0; i < arr.length; i++) {
-          if (verbs.includes(arr[i])) {
+          if (verbs.indexOf(arr[i]) > -1) {
             var index = getIndex(arr[i+1], all);
 
             if (index == -1) {
@@ -116,7 +116,7 @@ function analyzeText(detect, callBack) {
               lastVerbIndex = index;
             }
           }
-          else if (nouns.includes(arr[i])){
+          else if (nouns.indexOf(arr[i])>-1){
             if (lastVerbIndex != -1) {
               all[lastVerbIndex].addDescription(arr[i+1]);
             }
@@ -171,7 +171,7 @@ router.get('/',function (req,res, next) {
 
 /* GET home page. */
 router.post('/analyze', function (req, res, next) {
-  //console.log(req.body)
+  console.log(req.body)
   
   analyzeText(req.body.data, function (x) {
 
@@ -213,12 +213,21 @@ router.post('/analyze', function (req, res, next) {
         var result = [];
         var max = categorizedVals[0].count;
        for(i in categorizedVals){
+
+         
          if(categorizedVals[i].count < max) break;
-         var temp = categorizedVals[i].name
-         if( shopCategory.includes(temp)) result.push(categories[0])
-         else if( watchCategory.includes(temp)) result.push(categories[1])
-         else if( shopCategory.includes(temp)) result.push(categories[2])
-         else result.push(categories[3]);
+
+         if (categorizedVals[i][0] != undefined ) {
+          var temp = categorizedVals[i][0].name
+          console.log("Checking for " + temp);
+          if( shopCategory.indexOf(temp)>-1) {
+            result.push(categories[0]);
+            console.log("Shop!!");
+            }
+          else if( watchCategory.indexOf(temp)>-1) result.push(categories[1])
+          else if( shopCategory.indexOf(temp)>-1) result.push(categories[2])
+          else result.push(categories[3]);
+         }
        }
        console.log(result)
         res.send(result);
@@ -267,13 +276,13 @@ function normalizeList(verbGiven) {
     var itemName = item.name;
     //console.log("Item name normalization: " + itemName);
 
-    if (shopCategory.includes(itemName)) {
+    if (shopCategory.indexOf(itemName)>-1) {
       catList[0].push(item);
-    } else if (watchCategory.includes(itemName)) {
+    } else if (watchCategory.indexOf(itemName)>-1) {
       catList[1].push(item);
-    } else if (outdoorCategory.includes(itemName)) {
+    } else if (outdoorCategory.indexOf(itemName) >-1) {
       catList[2].push(item);
-    } else if (eatCategory.includes(itemName)){
+    } else if (eatCategory.indexOf(itemName)>-1){
       catList[3].push(item);
     }
 
